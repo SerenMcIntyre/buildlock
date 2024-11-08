@@ -61,6 +61,7 @@
 		"@node-rs/argon2": "^1.1.0",
 		"@oslojs/crypto": "^1.0.1",
 		"@oslojs/encoding": "^1.1.0",
+		"@sveltejs/adapter-node": "^5.2.9",
 		"drizzle-orm": "^0.33.0",
 		"postgres": "^3.4.4"
 	}
