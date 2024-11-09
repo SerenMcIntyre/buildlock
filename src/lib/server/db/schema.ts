@@ -17,7 +17,7 @@ export const session = pgTable('session', {
 
 export const item = pgTable('item', {
 	id: text('id').primaryKey(),
-	name: text('name').notNull(),
+	class: text('class').notNull(),
 	description: text('description').notNull(),
 	image: text('image').notNull(),
 	type: text('type').notNull(),
@@ -42,13 +42,14 @@ export const item = pgTable('item', {
 	weaponInfo: text('weapon_info').notNull(),
 	multibase: text('multibase').notNull(),
 	cancelAbilityKey: text('cancel_ability_key').notNull(),
-	mapAbilityProperties: text('map_ability_properties').notNull(),
-	bitsPostCastEnabledStateMask: text('bits_post_cast_enabled_state_mask').notNull(),
-	editor: text('editor').notNull()
+	bitsPostCastEnabledStateMask: text('bits_post_cast_enabled_state_mask').notNull()
 });
 
 export const abilityProperty = pgTable('ability_property', {
 	id: text('id').primaryKey(),
+	itemId: text('item_id')
+		.notNull()
+		.references(() => item.id),
 	name: text('name').notNull(),
 	value: text('value').notNull(),
 	disableValue: text('disable_value').notNull(),
@@ -87,6 +88,7 @@ export const tangent = pgTable('tangent', {
 
 export const tooltipSectionInfo = pgTable('tooltip_section_info', {
 	id: text('id').primaryKey(),
+	itemId: text('item_id'),
 	abilitySectionType: text('ability_section_type').notNull(),
 	sectionAttributes: text('section_attributes').notNull()
 });
@@ -100,6 +102,14 @@ export const autoIntrinsicModifier = pgTable('auto_intrinsic_modifier', {
 	id: text('id').primaryKey(),
 	name: text('name').notNull(),
 	subclassName: text('subclass_name').notNull()
+});
+
+export const editor = pgTable('editor', {
+	id: text('id').primaryKey(),
+	itemId: text('item_id')
+		.notNull()
+		.references(() => item.id),
+	folderName: text('folder_name').notNull()
 });
 
 export type Item = typeof item.$inferSelect;
@@ -119,6 +129,8 @@ export type TooltipSectionInfo = typeof tooltipSectionInfo.$inferSelect;
 export type SectionAttribute = typeof sectionAttribute.$inferSelect;
 
 export type AutoIntrinsicModifier = typeof autoIntrinsicModifier.$inferSelect;
+
+export type Editor = typeof editor.$inferSelect;
 
 export type Session = typeof session.$inferSelect;
 

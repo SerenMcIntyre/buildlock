@@ -1,7 +1,10 @@
-import { exec, execSync } from 'child_process';
-import { STEAM_USERNAME, STEAM_PASSWORD } from '$env/static/private';
+import { STEAM_PASSWORD, STEAM_USERNAME } from '$env/static/private';
 import * as m from '$lib/paraglide/messages.js';
+import { exec, execSync } from 'child_process';
 import Elysia from 'elysia';
+import fs from 'fs';
+import { parseItems } from '../parsers/item-parser';
+import parseVDataToJson from '../parsers/parse-vdata';
 
 export const admin = new Elysia({ prefix: '/admin' })
 	.post('/import', () => {
@@ -21,4 +24,28 @@ export const admin = new Elysia({ prefix: '/admin' })
 			const logs = execSync(`cat ./import/import_log.txt`).toString().split('\n');
 			return { completed: true, logs: logs.concat(m.process_terminated()) };
 		}
+	})
+	.post('/parse', ({ error }) => {
+		const itemParseResult = parseItemVdata();
+		if (itemParseResult.success) {
+			return itemParseResult;
+		}
+		return error(500, itemParseResult.error);
 	});
+
+const parseItemVdata = () => {
+	const filePath = './import/run/vdata/abilities.vdata';
+	const fileExists = fs.existsSync(filePath);
+	if (!fileExists) {
+		return { success: false, error: m.file_not_found() };
+	}
+
+	try {
+		const itemJson = parseVDataToJson(filePath);
+		const parsedItems = parseItems(itemJson);
+		return { success: true, items: parsedItems };
+	} catch (error) {
+		console.error('Failed to parse VDATA:', error);
+		return { success: false, error: m.parse_failed() };
+	}
+};

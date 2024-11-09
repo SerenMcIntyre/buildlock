@@ -4,5 +4,7 @@
 	"process_terminated": "Process terminated!",
 	"fetch_assets": "Fetch Assets",
 	"parse_assets": "Parse Assets",
-	"clear_logs": "Clear Logs"
+	"clear_logs": "Clear Logs",
+	"file_not_found": "File not found",
+	"parse_failed": "Parse failed"
 }

@@ -32,10 +32,23 @@
 		logs = [];
 	};
 
-	const onclick = () => {
+	const fetchAssets = () => {
 		client.api.admin.import.post().then((res) => {
 			if (res.status === 200 && res.data) {
 				checkStatus(res.data);
+			}
+		});
+	};
+
+	const parseAssets = () => {
+		client.api.admin.parse.post().then((res) => {
+			logs = [];
+			logs.push('Code: ' + res.status);
+			console.debug(res);
+			if (res.status !== 200) {
+				logs.push(res.error?.value ?? 'Unknown error');
+			} else {
+				logs = res.data?.items?.map((item) => item.key) ?? [];
 			}
 		});
 	};
@@ -53,10 +66,10 @@
 	</div>
 
 	<div class="btn-group">
-		<button type="button" class="btn btn-lg preset-tonal-secondary" {onclick}>
+		<button type="button" class="btn btn-lg preset-tonal-secondary" onclick={fetchAssets}>
 			{m.fetch_assets()}
 		</button>
-		<button type="button" class="btn btn-lg preset-tonal-secondary" {onclick}>
+		<button type="button" class="btn btn-lg preset-tonal-secondary" onclick={parseAssets}>
 			{m.parse_assets()}
 		</button>
 		<button type="button" class="btn btn-lg preset-tonal-tertiary" onclick={clearlogs}>
