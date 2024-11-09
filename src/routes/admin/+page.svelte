@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { client } from '$lib/api/client.svelte';
+	import { client } from '$lib/client.svelte';
+	import * as m from '$lib/paraglide/messages.js';
 
 	let logs: string[] = $state([]);
 
@@ -27,6 +28,10 @@
 			});
 	};
 
+	const clearlogs = () => {
+		logs = [];
+	};
+
 	const onclick = () => {
 		client.api.admin.import.post().then((res) => {
 			if (res.status === 200 && res.data) {
@@ -48,7 +53,14 @@
 	</div>
 
 	<div class="btn-group">
-		<button type="button" class="btn btn-lg preset-tonal-secondary" {onclick}>Fetch Assets</button>
-		<button type="button" class="btn btn-lg preset-tonal-secondary" {onclick}>Parse Assets</button>
+		<button type="button" class="btn btn-lg preset-tonal-secondary" {onclick}>
+			{m.fetch_assets()}
+		</button>
+		<button type="button" class="btn btn-lg preset-tonal-secondary" {onclick}>
+			{m.parse_assets()}
+		</button>
+		<button type="button" class="btn btn-lg preset-tonal-tertiary" onclick={clearlogs}>
+			{m.clear_logs()}
+		</button>
 	</div>
 </main>

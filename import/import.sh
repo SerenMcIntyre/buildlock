@@ -1,3 +1,6 @@
+mkdir -p import/run
+cd import/run
+
 if [ ! -f DepotDownloader ]; then
     wget https://github.com/SteamRE/DepotDownloader/releases/download/DepotDownloader_2.7.3/DepotDownloader-linux-x64.zip -O DepotDownloader-linux-x64.zip
     unzip -o DepotDownloader-linux-x64.zip DepotDownloader && rm DepotDownloader-linux-x64.zip
@@ -7,9 +10,6 @@ if [ ! -f Decompiler ]; then
     wget https://github.com/ValveResourceFormat/ValveResourceFormat/releases/download/10.2/Decompiler-linux-x64.zip -O Decompiler-linux-x64.zip
     unzip -o Decompiler-linux-x64.zip && rm Decompiler-linux-x64.zip
 fi
-
-mkdir -p import
-cd import
 
 ./DepotDownloader -app 1422450 -username "$STEAM_USERNAME" -password "$STEAM_PASSWORD" || exit 1
 

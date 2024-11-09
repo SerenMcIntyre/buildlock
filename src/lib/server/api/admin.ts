@@ -1,7 +1,7 @@
-import swagger from '@elysiajs/swagger';
 import { exec, execSync } from 'child_process';
-import { Elysia, t } from 'elysia';
 import { STEAM_USERNAME, STEAM_PASSWORD } from '$env/static/private';
+import * as m from '$lib/paraglide/messages.js';
+import Elysia from 'elysia';
 
 export const admin = new Elysia({ prefix: '/admin' })
 	.post('/import', () => {
@@ -19,13 +19,6 @@ export const admin = new Elysia({ prefix: '/admin' })
 			return isRunning ? { completed: false, logs } : { completed: true, logs };
 		} catch {
 			const logs = execSync(`cat ./import/import_log.txt`).toString().split('\n');
-			return { completed: true, logs: logs.concat('Process terminated') };
+			return { completed: true, logs: logs.concat(m.process_terminated()) };
 		}
 	});
-
-export const app = new Elysia({ prefix: '/api' })
-	.use(swagger({ scalarConfig: { spec: { url: '/api/swagger/json' } } }))
-	.use(admin)
-	.get('/health', () => 'ok');
-
-export type App = typeof app;
