@@ -21,7 +21,7 @@
 <ParaglideJS {i18n}>
 	<div class="card border-surface-100-900 grid h-screen w-full grid-cols-[1fr_auto] border-[1px]">
 		<div class="flex items-center justify-center">
-			{@render children()}
+				{@render children()}
 		</div>
 		<Nav.Rail width="w-16"  classes="transition-all">
 			{#snippet header()}
