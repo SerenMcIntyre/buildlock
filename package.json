@@ -23,6 +23,8 @@
 	"devDependencies": {
 		"@chromatic-com/storybook": "^3.2.2",
 		"@playwright/test": "^1.45.3",
+		"@skeletonlabs/skeleton": "^3.0.0-next.7",
+		"@skeletonlabs/skeleton-svelte": "^1.0.0-next.12",
 		"@storybook/addon-essentials": "^8.4.2",
 		"@storybook/addon-interactions": "^8.4.2",
 		"@storybook/addon-svelte-csf": "^5.0.0-next.11",
@@ -39,6 +41,7 @@
 		"@tailwindcss/typography": "^0.5.15",
 		"@types/bun": "^1.1.13",
 		"@types/eslint": "^9.6.0",
+		"@types/node": "^22.9.0",
 		"autoprefixer": "^10.4.20",
 		"drizzle-kit": "^0.22.0",
 		"eslint": "^9.7.0",
@@ -67,6 +70,7 @@
 		"@sveltejs/adapter-node": "^5.2.9",
 		"drizzle-orm": "^0.33.0",
 		"elysia": "^1.1.24",
+		"lucide-svelte": "^0.456.0",
 		"postgres": "^3.4.4"
 	}
 }
