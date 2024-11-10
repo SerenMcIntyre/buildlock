@@ -6,5 +6,6 @@
 	"parse_assets": "Parse Assets",
 	"clear_logs": "Clear Logs",
 	"file_not_found": "File not found",
-	"parse_failed": "Parse failed"
+	"parse_failed": "Parse failed",
+	"parsing_assets": "Parsing assets..."
 }

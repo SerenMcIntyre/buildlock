@@ -38,8 +38,6 @@ export const item = pgTable('item', {
 	startTrained: boolean('start_trained').notNull(),
 	shopFilters: text('shop_filters').notNull(),
 	autoIntrinsicModifiers: text('auto_intrinsic_modifiers').notNull(),
-	tooltipSectionInfo: text('tooltip_section_info').notNull(),
-	weaponInfo: text('weapon_info').notNull(),
 	multibase: text('multibase').notNull(),
 	cancelAbilityKey: text('cancel_ability_key').notNull(),
 	bitsPostCastEnabledStateMask: text('bits_post_cast_enabled_state_mask').notNull()

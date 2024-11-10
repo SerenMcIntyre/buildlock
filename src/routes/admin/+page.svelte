@@ -41,14 +41,14 @@
 	};
 
 	const parseAssets = () => {
+		logs = [m.parsing_assets(), '\n', '\n'];
 		client.api.admin.parse.post().then((res) => {
-			logs = [];
 			logs.push('Code: ' + res.status);
-			console.debug(res);
+			logs.push('\n');
 			if (res.status !== 200) {
 				logs.push(res.error?.value ?? 'Unknown error');
 			} else {
-				logs = res.data?.items?.map((item) => item.key) ?? [];
+				logs = logs.concat(res.data?.map((item) => item.key) ?? []);
 			}
 		});
 	};
@@ -60,7 +60,7 @@
 	>
 		<ul>
 			{#each logs as log}
-				<li>{log}</li>
+				<li class="h-4">{log}</li>
 			{/each}
 		</ul>
 	</div>

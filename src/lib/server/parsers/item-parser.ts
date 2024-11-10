@@ -1,6 +1,6 @@
 import type { AbilityProperty, Editor, Item, TooltipSectionInfo } from '../db/schema';
 
-interface ParsedItem {
+export interface ParsedItem {
 	key: string;
 	item: Item;
 	editor: Editor;
@@ -81,9 +81,7 @@ const parseItem = (key: string, itemData: any): ParsedItem => {
 
 export const parseItems = (json: Record<string, unknown>) => {
 	return Object.keys(json).map((key) => {
-		console.debug(key);
 		const parsed = parseItem(key, json[key]);
-		console.debug(parsed);
 		return parsed;
 	});
 };
