@@ -1,3 +1,109 @@
+# Function to check if a command exists
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+# Function to detect the package manager
+get_package_manager() {
+    if command_exists apt-get; then
+        echo "apt"
+    elif command_exists dnf; then
+        echo "dnf"
+    elif command_exists yum; then
+        echo "yum"
+    elif command_exists pacman; then
+        echo "pacman"
+    elif command_exists zypper; then
+        echo "zypper"
+    else
+        echo "unknown"
+    fi
+}
+
+# Required commands
+REQUIRED_COMMANDS=(
+    "wget"
+    "unzip"
+    "rsync"
+    "ffmpeg"
+    "magick"
+    "optipng"
+)
+
+# Package names for different package managers
+declare -A APT_PACKAGES=(
+    ["wget"]="wget"
+    ["unzip"]="unzip"
+    ["rsync"]="rsync"
+    ["ffmpeg"]="ffmpeg"
+    ["magick"]="imagemagick"
+    ["optipng"]="optipng"
+)
+
+declare -A DNF_PACKAGES=(
+    ["wget"]="wget"
+    ["unzip"]="unzip"
+    ["rsync"]="rsync"
+    ["ffmpeg"]="ffmpeg"
+    ["magick"]="ImageMagick"
+    ["optipng"]="optipng"
+)
+
+declare -A PACMAN_PACKAGES=(
+    ["wget"]="wget"
+    ["unzip"]="unzip"
+    ["rsync"]="rsync"
+    ["ffmpeg"]="ffmpeg"
+    ["magick"]="imagemagick"
+    ["optipng"]="optipng"
+)
+
+# Detect package manager
+PKG_MANAGER=$(get_package_manager)
+
+# Check for sudo privileges
+if [ "$EUID" -ne 0 ]; then
+    SUDO="sudo"
+else
+    SUDO=""
+fi
+
+echo "Detected package manager: $PKG_MANAGER"
+
+# Check and install missing commands
+for cmd in "${REQUIRED_COMMANDS[@]}"; do
+    if ! command_exists "$cmd"; then
+        echo "$cmd is not installed. Installing..."
+
+        case $PKG_MANAGER in
+            "apt")
+                $SUDO apt-get update
+                $SUDO apt-get install -y "${APT_PACKAGES[$cmd]}"
+                ;;
+            "dnf")
+                $SUDO dnf install -y "${DNF_PACKAGES[$cmd]}"
+                ;;
+            "yum")
+                $SUDO yum install -y "${DNF_PACKAGES[$cmd]}"
+                ;;
+            "pacman")
+                $SUDO pacman -Sy --noconfirm "${PACMAN_PACKAGES[$cmd]}"
+                ;;
+            "zypper")
+                $SUDO zypper install -y "${DNF_PACKAGES[$cmd]}"
+                ;;
+            *)
+                echo "Unsupported package manager. Please install $cmd manually."
+                exit 1
+                ;;
+        esac
+    else
+        echo "$cmd is already installed"
+    fi
+done
+
+echo "All required commands are installed!"
+
 mkdir -p import/run
 cd import/run
 
