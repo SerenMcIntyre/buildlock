@@ -1,4 +1,4 @@
-import { pgTable, text, integer, timestamp, boolean } from 'drizzle-orm/pg-core';
+import { pgTable, text, integer, timestamp, boolean, primaryKey } from 'drizzle-orm/pg-core';
 
 export const user = pgTable('user', {
 	id: text('id').primaryKey(),
@@ -110,6 +110,18 @@ export const editor = pgTable('editor', {
 	folderName: text('folder_name').notNull()
 });
 
+export const localizationMessage = pgTable(
+	'localization_message',
+	{
+		language: text('language').notNull(),
+		key: text('key').notNull(),
+		value: text('value').notNull()
+	},
+	(table) => {
+		return { pk: primaryKey({ columns: [table.language, table.key] }) };
+	}
+);
+
 export type Item = typeof item.$inferSelect;
 
 export type AbilityProperty = typeof abilityProperty.$inferSelect;
@@ -133,3 +145,5 @@ export type Editor = typeof editor.$inferSelect;
 export type Session = typeof session.$inferSelect;
 
 export type User = typeof user.$inferSelect;
+
+export type LocalizationMessage = typeof localizationMessage.$inferSelect;

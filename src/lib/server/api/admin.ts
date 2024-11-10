@@ -6,7 +6,15 @@ import fs from 'fs';
 import { parseItems, type ParsedItem } from '../parsers/item-parser';
 import parseVDataToJson from '../parsers/parse-vdata';
 import { db } from '../db';
-import { abilityProperty, editor, item, tooltipSectionInfo } from '../db/schema';
+import {
+	abilityProperty,
+	editor,
+	item,
+	localizationMessage,
+	tooltipSectionInfo,
+	type LocalizationMessage
+} from '../db/schema';
+import { parseLocalization } from '../parsers/parse-localization';
 
 export const admin = new Elysia({ prefix: '/admin' })
 	.post('/import', () => {
@@ -27,13 +35,26 @@ export const admin = new Elysia({ prefix: '/admin' })
 			return { completed: true, logs: logs.concat(m.process_terminated()) };
 		}
 	})
-	.post('/parse', ({ error }) => {
+	.post('/parseItems', ({ error }) => {
 		const itemParseResult = parseItemVdata();
 		if (itemParseResult.success) {
 			itemParseResult.items?.forEach(updateItem);
 			return itemParseResult.items;
 		}
 		return error(500, itemParseResult.error);
+	})
+	.post('/parseLocalization', ({ error }) => {
+		try {
+			const localizationParseResult = parseLocalization('./import/run/localization');
+			if (localizationParseResult.length > 0) {
+				localizationParseResult.forEach(updateLocalization);
+				return localizationParseResult;
+			}
+			return error(500, m.parse_failed());
+		} catch (err) {
+			console.error('Failed to parse localization:', err);
+			return error(500, m.parse_failed());
+		}
 	});
 
 const parseItemVdata = () => {
@@ -125,6 +146,18 @@ const updateItem = async (parsedItem: ParsedItem) => {
 			target: editor.id,
 			set: {
 				folderName: itemEditor.folderName
+			}
+		});
+};
+
+const updateLocalization = async (parsedLocalization: LocalizationMessage) => {
+	await db
+		.insert(localizationMessage)
+		.values(parsedLocalization)
+		.onConflictDoUpdate({
+			target: [localizationMessage.key, localizationMessage.language],
+			set: {
+				value: parsedLocalization.value
 			}
 		});
 };

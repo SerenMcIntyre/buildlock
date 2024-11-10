@@ -42,13 +42,34 @@
 
 	const parseAssets = () => {
 		logs = [m.parsing_assets(), '\n', '\n'];
-		client.api.admin.parse.post().then((res) => {
+		client.api.admin.parseItems.post().then((res) => {
 			logs.push('Code: ' + res.status);
 			logs.push('\n');
 			if (res.status !== 200) {
 				logs.push(res.error?.value ?? 'Unknown error');
 			} else {
 				logs = logs.concat(res.data?.map((item) => item.key) ?? []);
+			}
+		});
+	};
+
+	const parseLocalization = () => {
+		logs = [m.parsing_assets(), '\n', '\n'];
+		client.api.admin.parseLocalization.post().then((res) => {
+			logs.push('Code: ' + res.status);
+			logs.push('\n');
+			if (res.status !== 200) {
+				logs.push(res.error?.value ?? 'Unknown error');
+			} else {
+				logs = logs.concat(
+					res.data?.map((item) =>
+						m.localizationImportMessage({
+							key: item.key,
+							value: item.value,
+							language: item.language
+						})
+					) ?? []
+				);
 			}
 		});
 	};
@@ -60,7 +81,7 @@
 	>
 		<ul>
 			{#each logs as log}
-				<li class="h-4">{log}</li>
+				<li class="min-h-4">{log}</li>
 			{/each}
 		</ul>
 	</div>
@@ -70,7 +91,10 @@
 			{m.fetch_assets()}
 		</button>
 		<button type="button" class="btn btn-lg preset-tonal-secondary" onclick={parseAssets}>
-			{m.parse_assets()}
+			{m.parse_items()}
+		</button>
+		<button type="button" class="btn btn-lg preset-tonal-secondary" onclick={parseLocalization}>
+			{m.parse_localization()}
 		</button>
 		<button type="button" class="btn btn-lg preset-tonal-tertiary" onclick={clearlogs}>
 			{m.clear_logs()}
