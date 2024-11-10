@@ -21,7 +21,8 @@ const parseVDataToJson = (filePath: string) => {
 	cleanContent = cleanContent.replace(/\n\s*(\w+)\s*:/g, ',\n$1:');
 	// Remove commas after opening curly braces
 	cleanContent = cleanContent.replace(/(\{)\s*,/g, '$1');
-	fs.writeFileSync('./import/run/vdata/abilities.json', cleanContent);
+	// Replace "true" with true
+	cleanContent = cleanContent.replace(/"true"/g, 'true');
 
 	// Convert VDATA syntax to valid JSON syntax
 	const jsonString = cleanContent
