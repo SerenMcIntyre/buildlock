@@ -2,6 +2,7 @@
 	"$schema": "https://inlang.com/schema/inlang-message-format",
 	"language": "日本語",
 	"localizationFileKey": "japanese",
+	"flag": "🇯🇵",
 	"localizationImportMessage": "Imported message - key: {key}, value: {value}, language: {language}",
 	"process_terminated": "プロセスが終了しました！",
 	"fetch_assets": "アセットを取得",
