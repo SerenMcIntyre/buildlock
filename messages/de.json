@@ -1,0 +1,14 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"language": "Deutsch",
+	"localizationFileKey": "german",
+	"localizationImportMessage": "Importierte Nachricht - Schlüssel: {key}, Wert: {value}, Sprache: {language}",
+	"process_terminated": "Prozess beendet!",
+	"fetch_assets": "Assets abrufen",
+	"parse_items": "Assets analysieren",
+	"parse_localization": "Lokalisierung analysieren",
+	"clear_logs": "Logs löschen",
+	"file_not_found": "Datei nicht gefunden",
+	"parse_failed": "Analyse fehlgeschlagen",
+	"parsing_assets": "Assets werden analysiert..."
+}
