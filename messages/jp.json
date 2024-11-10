@@ -1,0 +1,13 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"language": "日本語",
+	"localizationFileKey": "japanese",
+	"localizationImportMessage": "Imported message - key: {key}, value: {value}, language: {language}",
+	"process_terminated": "プロセスが終了しました！",
+	"fetch_assets": "アセットを取得",
+	"parse_assets": "アセットを解析",
+	"clear_logs": "ログをクリア",
+	"file_not_found": "ファイルが見つかりません",
+	"parse_failed": "解析に失敗しました",
+	"parsing_assets": "アセットを解析中..."
+}
