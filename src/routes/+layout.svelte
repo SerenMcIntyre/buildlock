@@ -8,6 +8,7 @@
 	import { Nav } from '@skeletonlabs/skeleton-svelte';
 	import { Bolt, Bookmark, CircleUserRound, Swords } from 'lucide-svelte/icons';
 	import Github from '$lib/assets/brand-icons/Github.svelte';
+	import LocaleSwitcher from '$lib/components/core/LocaleSwitcher.svelte';
 	let { children } = $props();
 
 	const client = treaty<App>(PUBLIC_BASE_URL);
@@ -47,6 +48,7 @@
 				<button type="button" class="btn flex w-full justify-start">
 					<CircleUserRound class="stroke-surface-300" />
 				</button>
+				<LocaleSwitcher />
 			{/snippet}
 		</Nav.Rail>
 	</div>
