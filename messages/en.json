@@ -11,5 +11,8 @@
 	"clear_logs": "Clear Logs",
 	"file_not_found": "File not found",
 	"parse_failed": "Parse failed",
-	"parsing_assets": "Parsing assets..."
+	"parsing_assets": "Parsing assets...",
+	"admin_header": "Admin",
+	"items_header": "Items",
+	"loading_failed": "Loading failed"
 }

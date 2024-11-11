@@ -75,29 +75,28 @@
 	};
 </script>
 
-<main class="flex w-full flex-col items-center justify-center gap-4">
-	<div
-		class="card card-hover block h-80 w-10/12 divide-y overflow-auto border-[1px] p-4 border-surface-200-800 divide-surface-200-800 preset-filled-surface-100-900"
-	>
-		<ul>
-			{#each logs as log}
-				<li class="min-h-4">{log}</li>
-			{/each}
-		</ul>
-	</div>
+<h1 class="h1">{m.admin_header()}</h1>
+<div
+	class="card card-hover block h-96 w-full divide-y overflow-auto border-[1px] p-4 border-surface-200-800 divide-surface-200-800 preset-filled-surface-100-900"
+>
+	<ul>
+		{#each logs as log}
+			<li class="min-h-4">{log}</li>
+		{/each}
+	</ul>
+</div>
 
-	<div class="btn-group">
-		<button type="button" class="btn btn-lg preset-tonal-secondary" onclick={fetchAssets}>
-			{m.fetch_assets()}
-		</button>
-		<button type="button" class="btn btn-lg preset-tonal-secondary" onclick={parseAssets}>
-			{m.parse_items()}
-		</button>
-		<button type="button" class="btn btn-lg preset-tonal-secondary" onclick={parseLocalization}>
-			{m.parse_localization()}
-		</button>
-		<button type="button" class="btn btn-lg preset-tonal-tertiary" onclick={clearlogs}>
-			{m.clear_logs()}
-		</button>
-	</div>
-</main>
+<div class="btn-group p-4">
+	<button type="button" class="btn btn-lg preset-tonal-secondary" onclick={fetchAssets}>
+		{m.fetch_assets()}
+	</button>
+	<button type="button" class="btn btn-lg preset-tonal-secondary" onclick={parseAssets}>
+		{m.parse_items()}
+	</button>
+	<button type="button" class="btn btn-lg preset-tonal-secondary" onclick={parseLocalization}>
+		{m.parse_localization()}
+	</button>
+	<button type="button" class="btn btn-lg preset-tonal-tertiary" onclick={clearlogs}>
+		{m.clear_logs()}
+	</button>
+</div>
