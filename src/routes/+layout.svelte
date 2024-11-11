@@ -1,28 +1,20 @@
 <script lang="ts">
 	import { i18n } from '$lib/i18n';
 	import { ParaglideJS } from '@inlang/paraglide-sveltekit';
-	import { type App } from '$lib/server/api';
 	import '../app.css';
-	import { treaty } from '@elysiajs/eden';
-	import { PUBLIC_BASE_URL } from '$env/static/public';
 	import { Nav } from '@skeletonlabs/skeleton-svelte';
-	import { Bolt, Bookmark, CircleUserRound, Swords } from 'lucide-svelte/icons';
+	import { Bolt, Bookmark, CircleUserRound, Swords, Wrench } from 'lucide-svelte/icons';
 	import Github from '$lib/assets/brand-icons/Github.svelte';
 	import LocaleSwitcher from '$lib/components/core/LocaleSwitcher.svelte';
+	import * as m from '$lib/paraglide/messages.js';
 	let { children } = $props();
-
-	const client = treaty<App>(PUBLIC_BASE_URL);
-
-	$effect(() => {
-		client.api.health.get().then((res) => console.log(res.data));
-	});
 </script>
 
 <ParaglideJS {i18n}>
-	<div class="card grid h-screen w-full grid-cols-[1fr_auto] border-[1px] border-surface-100-900">
-		<div class="flex items-center justify-center">
+	<div class="grid h-screen w-full grid-cols-[1fr_auto]">
+		<main class="max-h-screen overflow-auto p-20">
 			{@render children()}
-		</div>
+		</main>
 		<Nav.Rail width="w-16" classes="transition-all">
 			{#snippet header()}
 				<Nav.Tile
@@ -34,14 +26,17 @@
 				</Nav.Tile>
 			{/snippet}
 			{#snippet tiles()}
-				<Nav.Tile id="0" label="Build" href="#">
+				<Nav.Tile id="0" label="Build" href="">
 					<Bolt class="stroke-surface-300" />
 				</Nav.Tile>
 				<Nav.Tile id="1" label="Saved" href="#">
 					<Bookmark class="stroke-surface-300" />
 				</Nav.Tile>
-				<Nav.Tile id="2" label="Items" href="#">
+				<Nav.Tile id="2" label={m.items_header()} href="/items">
 					<Swords class="stroke-surface-300" />
+				</Nav.Tile>
+				<Nav.Tile id="3" label={m.admin_header()} href="/admin">
+					<Wrench class="stroke-surface-300" />
 				</Nav.Tile>
 			{/snippet}
 			{#snippet footer()}
