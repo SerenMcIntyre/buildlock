@@ -3,7 +3,6 @@
 	import { client } from '$lib/client.svelte';
 	import { languageTag } from '$lib/paraglide/runtime';
 
-	// Since language specific data is fetched on the server, refresh this page when the language changes
 	const items = client.api.items.index.get({ query: { locale: languageTag() } }).then((res) => {
 		if (res.status === 200) {
 			return { success: true, items: res.data };
