@@ -4,7 +4,8 @@ export const user = pgTable('user', {
 	id: text('id').primaryKey(),
 	email: text('email').notNull().unique(),
 	username: text('username').notNull().unique(),
-	passwordHash: text('password_hash').notNull()
+	passwordHash: text('password_hash').notNull(),
+	canAccessAdmin: boolean('can_access_admin').notNull().default(false)
 });
 
 export const session = pgTable('session', {
