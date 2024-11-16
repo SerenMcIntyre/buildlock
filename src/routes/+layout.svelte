@@ -2,7 +2,7 @@
 	import { i18n } from '$lib/i18n';
 	import { ParaglideJS } from '@inlang/paraglide-sveltekit';
 	import '../app.css';
-	import { Nav } from '@skeletonlabs/skeleton-svelte';
+	import { Nav, ToastProvider } from '@skeletonlabs/skeleton-svelte';
 	import { Bolt, Bookmark, LogOut, Swords, Wrench } from 'lucide-svelte/icons';
 	import Github from '$lib/assets/brand-icons/Github.svelte';
 	import LocaleSwitcher from '$lib/components/core/LocaleSwitcher.svelte';
@@ -16,7 +16,9 @@
 <ParaglideJS {i18n}>
 	<div class="grid h-screen w-full grid-cols-[1fr_auto]">
 		<main class="max-h-screen overflow-auto p-20">
-			{@render children()}
+			<ToastProvider>
+				{@render children()}
+			</ToastProvider>
 		</main>
 
 		{#if data.user}
