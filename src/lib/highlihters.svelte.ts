@@ -1,15 +1,20 @@
-import { createHighlighter } from 'shiki';
+import { createHighlighter, type HighlighterGeneric } from 'shiki';
 
-const highlighter = $state(
-	await createHighlighter({
-		themes: ['nord'],
-		langs: ['bash']
-	})
-);
+type Highlighter = HighlighterGeneric<'bash', 'nord'>;
+
+let highlighter = $state<Highlighter | null>(null);
+createHighlighter({
+	themes: ['nord'],
+	langs: ['bash']
+}).then((hl) => {
+	highlighter = hl;
+});
 
 export const highlight = (code: string) => {
-	return highlighter.codeToHtml(code, {
-		lang: 'bash',
-		theme: 'nord'
-	});
+	return (
+		highlighter?.codeToHtml(code, {
+			lang: 'bash',
+			theme: 'nord'
+		}) ?? ''
+	);
 };

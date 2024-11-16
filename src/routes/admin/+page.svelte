@@ -104,7 +104,7 @@
 <h1 class="h1">{m.admin_header()}</h1>
 <div class="flex flex-col gap-4">
 	<p>{m.script_instructions()}</p>
-	<code class="bg-[#2e3440ff] p-4">{@html highlight(m.script_cmd())}</code>
+	<code class="overflow-x-auto bg-[#2e3440ff] p-4">{@html highlight(m.script_cmd())}</code>
 	<p>{m.script_instructions_2()}</p>
 	<a
 		href="import_game_assets.sh"
