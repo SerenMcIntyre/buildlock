@@ -1,7 +1,7 @@
 import { STEAM_PASSWORD, STEAM_USERNAME } from '$env/static/private';
 import * as m from '$lib/paraglide/messages.js';
 import { exec, execSync } from 'child_process';
-import Elysia from 'elysia';
+import Elysia, { t } from 'elysia';
 import fs from 'fs';
 import { parseItems, type ParsedItem } from '../parsers/item-parser';
 import parseVDataToJson from '../parsers/parse-vdata';
@@ -16,7 +16,16 @@ import {
 } from '../db/schema';
 import { parseLocalization } from '../parsers/parse-localization';
 
+const fileBody = t.Object({
+	file: t.File()
+});
+
+const AdminModel = new Elysia().model({
+	'admin.file': fileBody
+});
+
 export const admin = new Elysia({ prefix: '/admin' })
+	.use(AdminModel)
 	.post('/import', () => {
 		const command = `STEAM_USERNAME=${STEAM_USERNAME} STEAM_PASSWORD=${STEAM_PASSWORD} ./import/import.sh > ./import/import_log.txt 2>&1`;
 		const childProcess = exec(command);
@@ -35,30 +44,59 @@ export const admin = new Elysia({ prefix: '/admin' })
 			return { completed: true, logs: logs.concat(m.process_terminated()) };
 		}
 	})
-	.post('/parseItems', ({ error }) => {
-		const itemParseResult = parseItemVdata();
-		if (itemParseResult.success) {
-			itemParseResult.items?.forEach(updateItem);
-			return itemParseResult.items;
-		}
-		return error(500, itemParseResult.error);
-	})
-	.post('/parseLocalization', ({ error }) => {
-		try {
-			const localizationParseResult = parseLocalization('./import/run/localization');
-			if (localizationParseResult.length > 0) {
-				localizationParseResult.forEach(updateLocalization);
-				return localizationParseResult;
+	.post(
+		'/parseItems',
+		async ({ body, error }) => {
+			let workingDir = '';
+			try {
+				console.debug('allo');
+				workingDir = await unzipFile(body.file);
+				console.debug(workingDir);
+				const itemParseResult = parseItemVdata(workingDir);
+				if (itemParseResult.success) {
+					itemParseResult.items?.forEach(updateItem);
+					return itemParseResult.items;
+				}
+				return error(404, itemParseResult.error);
+			} catch {
+				return error(500, m.parse_failed());
+			} finally {
+				if (workingDir) {
+					fs.rmSync(workingDir, { recursive: true });
+				}
 			}
-			return error(500, m.parse_failed());
-		} catch (err) {
-			console.error('Failed to parse localization:', err);
-			return error(500, m.parse_failed());
-		}
-	});
+		},
+		{ body: 'admin.file' }
+	)
+	.post(
+		'/parseLocalization',
+		async ({ body, error }) => {
+			let workingDir = '';
+			try {
+				workingDir = await unzipFile(body.file);
+				if (!fs.existsSync(workingDir + '/localization')) {
+					return error(404, m.file_not_found());
+				}
+				const localizationParseResult = parseLocalization(workingDir + '/localization');
+				if (localizationParseResult.length > 0) {
+					localizationParseResult.forEach(updateLocalization);
+					return localizationParseResult;
+				}
+				return error(500, m.parse_failed());
+			} catch (err) {
+				console.error('Failed to parse localization:', err);
+				return error(500, m.parse_failed());
+			} finally {
+				if (workingDir) {
+					fs.rmSync(workingDir, { recursive: true });
+				}
+			}
+		},
+		{ body: 'admin.file' }
+	);
 
-const parseItemVdata = () => {
-	const filePath = './import/run/vdata/abilities.vdata';
+const parseItemVdata = (path: string) => {
+	const filePath = path + '/vdata/abilities.vdata';
 	const fileExists = fs.existsSync(filePath);
 	if (!fileExists) {
 		return { success: false, error: m.file_not_found() };
@@ -160,4 +198,20 @@ const updateLocalization = async (parsedLocalization: LocalizationMessage) => {
 				value: parsedLocalization.value
 			}
 		});
+};
+
+const unzipFile = async (file: File) => {
+	const tempDirPath = `temp${Array(16)
+		.fill(0)
+		.map(() => Math.random().toString(36).charAt(2))
+		.join('')}`;
+	fs.mkdirSync(tempDirPath, { recursive: true });
+
+	const zipPath = `${tempDirPath}/upload.zip`;
+	fs.writeFileSync(zipPath, Buffer.from(await file.arrayBuffer()));
+
+	execSync(`unzip ${zipPath} -d ${tempDirPath}`);
+	fs.unlinkSync(zipPath);
+
+	return tempDirPath;
 };
