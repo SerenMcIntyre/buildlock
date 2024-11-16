@@ -40,9 +40,11 @@
 					<Nav.Tile id="2" label={m.items_header()} href="/items">
 						<Swords class="stroke-surface-300" />
 					</Nav.Tile>
-					<Nav.Tile id="3" label={m.admin_header()} href="/admin">
-						<Wrench class="stroke-surface-300" />
-					</Nav.Tile>
+					{#if data.user.canAccessAdmin}
+						<Nav.Tile id="3" label={m.admin_header()} href="/admin">
+							<Wrench class="stroke-surface-300" />
+						</Nav.Tile>
+					{/if}
 				{/snippet}
 				{#snippet footer()}
 					<Nav.Tile id="4" label={m.logout()} href="/account/logout">

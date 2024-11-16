@@ -1,0 +1,643 @@
+{
+  "id": "7dc3ce18-cb28-439f-97e4-632f2f690736",
+  "prevId": "7fbcb2ed-0d6d-4019-8ee8-facd037873bd",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.ability_property": {
+      "name": "ability_property",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "item_id": {
+          "name": "item_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "value": {
+          "name": "value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "disable_value": {
+          "name": "disable_value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "css_class": {
+          "name": "css_class",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "can_set_token_override": {
+          "name": "can_set_token_override",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "subclass_scale_function": {
+          "name": "subclass_scale_function",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "ability_property_item_id_item_id_fk": {
+          "name": "ability_property_item_id_item_id_fk",
+          "tableFrom": "ability_property",
+          "tableTo": "item",
+          "columnsFrom": [
+            "item_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.auto_intrinsic_modifier": {
+      "name": "auto_intrinsic_modifier",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "subclass_name": {
+          "name": "subclass_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.editor": {
+      "name": "editor",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "item_id": {
+          "name": "item_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "folder_name": {
+          "name": "folder_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "editor_item_id_item_id_fk": {
+          "name": "editor_item_id_item_id_fk",
+          "tableFrom": "editor",
+          "tableTo": "item",
+          "columnsFrom": [
+            "item_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.item": {
+      "name": "item",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "class": {
+          "name": "class",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "image": {
+          "name": "image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tier": {
+          "name": "tier",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "price": {
+          "name": "price",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "rarity": {
+          "name": "rarity",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "item_class": {
+          "name": "item_class",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "item_slot_type": {
+          "name": "item_slot_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ability_type": {
+          "name": "ability_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ability_targeting_location": {
+          "name": "ability_targeting_location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ability_activation": {
+          "name": "ability_activation",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cast_anim_graph_param": {
+          "name": "cast_anim_graph_param",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cast_anim_sequence_name": {
+          "name": "cast_anim_sequence_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "selection_name_override": {
+          "name": "selection_name_override",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "preview_path_particle": {
+          "name": "preview_path_particle",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "disabled": {
+          "name": "disabled",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "update_time": {
+          "name": "update_time",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "start_trained": {
+          "name": "start_trained",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "shop_filters": {
+          "name": "shop_filters",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "auto_intrinsic_modifiers": {
+          "name": "auto_intrinsic_modifiers",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "multibase": {
+          "name": "multibase",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cancel_ability_key": {
+          "name": "cancel_ability_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "bits_post_cast_enabled_state_mask": {
+          "name": "bits_post_cast_enabled_state_mask",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.localization_message": {
+      "name": "localization_message",
+      "schema": "",
+      "columns": {
+        "language": {
+          "name": "language",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "key": {
+          "name": "key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "value": {
+          "name": "value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "localization_message_language_key_pk": {
+          "name": "localization_message_language_key_pk",
+          "columns": [
+            "language",
+            "key"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.scale_function": {
+      "name": "scale_function",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "subclass_name": {
+          "name": "subclass_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.section_attribute": {
+      "name": "section_attribute",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "ability_properties": {
+          "name": "ability_properties",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.session": {
+      "name": "session",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "session_user_id_user_id_fk": {
+          "name": "session_user_id_user_id_fk",
+          "tableFrom": "session",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.spline": {
+      "name": "spline",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "spline": {
+          "name": "spline",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tangents": {
+          "name": "tangents",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "domain_mins": {
+          "name": "domain_mins",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "domain_maxs": {
+          "name": "domain_maxs",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.spline_point": {
+      "name": "spline_point",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "x": {
+          "name": "x",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "y": {
+          "name": "y",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "slope_incoming": {
+          "name": "slope_incoming",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "slope_outgoing": {
+          "name": "slope_outgoing",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.tangent": {
+      "name": "tangent",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "incoming_tangent": {
+          "name": "incoming_tangent",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "outgoing_tangent": {
+          "name": "outgoing_tangent",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.tooltip_section_info": {
+      "name": "tooltip_section_info",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "item_id": {
+          "name": "item_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ability_section_type": {
+          "name": "ability_section_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "section_attributes": {
+          "name": "section_attributes",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.user": {
+      "name": "user",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "username": {
+          "name": "username",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password_hash": {
+          "name": "password_hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "can_access_admin": {
+          "name": "can_access_admin",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "user_email_unique": {
+          "name": "user_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        },
+        "user_username_unique": {
+          "name": "user_username_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "username"
+          ]
+        }
+      }
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
