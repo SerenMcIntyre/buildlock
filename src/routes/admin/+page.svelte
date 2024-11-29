@@ -8,6 +8,8 @@
 
 	let logs: string[] = $state([]);
 	const toast: ToastContext = getContext('toast');
+	const userAgent = window.navigator.userAgent.toLowerCase();
+	const isMac = /macintosh|mac os x/i.test(userAgent);
 
 	const checkStatus = (pid: number) => {
 		client.api.admin
@@ -35,19 +37,6 @@
 
 	const clearlogs = () => {
 		logs = [];
-	};
-
-	const fetchAssets = () => {
-		client.api.admin.import.post().then((res) => {
-			if (res.status === 200 && res.data) {
-				checkStatus(res.data);
-			} else {
-				toast.create({
-					type: 'error',
-					title: m.parse_failed()
-				});
-			}
-		});
 	};
 
 	const uploadAssets = (target: 'assets' | 'localization', details: { files: File[] }) => {
@@ -104,11 +93,13 @@
 <h1 class="h1">{m.admin_header()}</h1>
 <div class="flex flex-col gap-4">
 	<p>{m.script_instructions()}</p>
-	<code class="overflow-x-auto bg-[#2e3440ff] p-4">{@html highlight(m.script_cmd())}</code>
+	<code class="overflow-x-auto bg-[#2e3440ff] p-4"
+		>{@html highlight(isMac ? m.script_macos() : m.script_linux())}</code
+	>
 	<p>{m.script_instructions_2()}</p>
 	<a
-		href="import_game_assets.sh"
-		download="import_game_assets.sh"
+		href={isMac ? 'import_game_assets_macos.sh' : 'import_game_assets_linux.sh'}
+		download={isMac ? 'import_game_assets_macos.sh' : 'import_game_assets_linux.sh'}
 		class="btn btn-lg preset-tonal-secondary"
 	>
 		<Download />

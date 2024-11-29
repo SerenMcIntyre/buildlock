@@ -5,100 +5,52 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Function to detect the package manager
-get_package_manager() {
-    if command_exists apt-get; then
-        echo "apt"
-    elif command_exists dnf; then
-        echo "dnf"
-    elif command_exists yum; then
-        echo "yum"
-    elif command_exists pacman; then
-        echo "pacman"
-    elif command_exists zypper; then
-        echo "zypper"
-    else
-        echo "unknown"
-    fi
-}
+# Initialize username and password variables
+USERNAME=""
+PASSWORD=""
 
-# Required commands
-REQUIRED_COMMANDS=(
-    "wget"
-    "unzip"
-    "rsync"
-    "ffmpeg"
-    "magick"
-    "optipng"
-)
+# Parse command line arguments
+while getopts "u:p:" opt; do
+  case $opt in
+    u) USERNAME="$OPTARG";;
+    p) PASSWORD="$OPTARG";;
+    ?)
+      echo "Usage: $0 -u <username> -p <password>"
+      exit 1
+      ;;
+  esac
+done
 
-# Package names for different package managers
-declare -A APT_PACKAGES=(
-    ["wget"]="wget"
-    ["unzip"]="unzip"
-    ["rsync"]="rsync"
-    ["ffmpeg"]="ffmpeg"
-    ["magick"]="imagemagick"
-    ["optipng"]="optipng"
-)
-
-declare -A DNF_PACKAGES=(
-    ["wget"]="wget"
-    ["unzip"]="unzip"
-    ["rsync"]="rsync"
-    ["ffmpeg"]="ffmpeg"
-    ["magick"]="ImageMagick"
-    ["optipng"]="optipng"
-)
-
-declare -A PACMAN_PACKAGES=(
-    ["wget"]="wget"
-    ["unzip"]="unzip"
-    ["rsync"]="rsync"
-    ["ffmpeg"]="ffmpeg"
-    ["magick"]="imagemagick"
-    ["optipng"]="optipng"
-)
-
-# Detect package manager
-PKG_MANAGER=$(get_package_manager)
-
-# Check for sudo privileges
-if [ "$EUID" -ne 0 ]; then
-    SUDO="sudo"
-else
-    SUDO=""
+# Check if username and password are provided
+if [ -z "$USERNAME" ] || [ -z "$PASSWORD" ]; then
+    echo "Usage: $0 -u <username> -p <password>"
+    exit 1
 fi
 
-echo "Detected package manager: $PKG_MANAGER"
+# Use parallel arrays instead of associative arrays
+COMMANDS=(wget unzip rsync ffmpeg magick optipng depotdownloader)
+PACKAGES=(wget unzip rsync ffmpeg imagemagick optipng depotdownloader)
+TAPS=("" "" "" "" "" "" "steamre/tools")
+
+# Detect package manager
+BREW_EXISTS=$(command_exists "brew")
+
+# If brew is not installed, then exit the script
+if ! $BREW_EXISTS; then
+    echo "Brew is not installed. Please install it manually."
+    exit 1
+fi
 
 # Check and install missing commands
-for cmd in "${REQUIRED_COMMANDS[@]}"; do
+for i in "${!COMMANDS[@]}"; do
+    cmd="${COMMANDS[$i]}"
     if ! command_exists "$cmd"; then
         echo "$cmd is not installed. Installing..."
 
-        case $PKG_MANAGER in
-            "apt")
-                $SUDO apt-get update
-                $SUDO apt-get install -y "${APT_PACKAGES[$cmd]}"
-                ;;
-            "dnf")
-                $SUDO dnf install -y "${DNF_PACKAGES[$cmd]}"
-                ;;
-            "yum")
-                $SUDO yum install -y "${DNF_PACKAGES[$cmd]}"
-                ;;
-            "pacman")
-                $SUDO pacman -Sy --noconfirm "${PACMAN_PACKAGES[$cmd]}"
-                ;;
-            "zypper")
-                $SUDO zypper install -y "${DNF_PACKAGES[$cmd]}"
-                ;;
-            *)
-                echo "Unsupported package manager. Please install $cmd manually."
-                exit 1
-                ;;
-        esac
+        if [ -n "${TAPS[$i]}" ]; then
+            brew tap "${TAPS[$i]}"
+        fi
+        brew install "${PACKAGES[$i]}"
     else
         echo "$cmd is already installed"
     fi
@@ -109,17 +61,12 @@ echo "All required commands are installed!"
 mkdir -p import/run
 cd import/run
 
-if [ ! -f DepotDownloader ]; then
-    wget https://github.com/SteamRE/DepotDownloader/releases/download/DepotDownloader_2.7.3/DepotDownloader-linux-x64.zip -O DepotDownloader-linux-x64.zip
-    unzip -o DepotDownloader-linux-x64.zip DepotDownloader && rm DepotDownloader-linux-x64.zip
-fi
-
 if [ ! -f Decompiler ]; then
     wget https://github.com/ValveResourceFormat/ValveResourceFormat/releases/download/10.2/Decompiler-linux-x64.zip -O Decompiler-linux-x64.zip
     unzip -o Decompiler-linux-x64.zip && rm Decompiler-linux-x64.zip
 fi
 
-./DepotDownloader -app 1422450 || exit 1
+depotdownloader -app 1422450 -username "$USERNAME" -password "$PASSWORD" || exit 1
 
 mkdir -p depots/game
 rsync -av depots/*/*/game/* depots/game/

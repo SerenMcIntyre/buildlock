@@ -85,7 +85,8 @@ export const auth = new Elysia({ prefix: '/auth' })
 					expires: newSession.expiresAt,
 					path: '/'
 				});
-			} catch {
+			} catch (err) {
+				console.debug(err);
 				return error(500, { message: 'An error has occurred' });
 			}
 			return { message: 'Registered' };
